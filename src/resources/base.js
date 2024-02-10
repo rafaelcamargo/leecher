@@ -6,6 +6,14 @@ _public.get = (url, params) => {
   return request(buildFullUrl(url, params));
 };
 
+_public.post = (url, body) => {
+  return request(url, {
+    body: JSON.stringify(body),
+    headers: { 'Content-Type': 'application/json' },
+    method: 'POST'
+  });
+};
+
 function request(url, options) {
   return httpService.fetch(url, options).then(async response => {
     const data = await parseResponseData(response);

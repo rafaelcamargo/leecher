@@ -45,4 +45,18 @@ describe('Base Resource', () => {
     await baseResource.get(url, params);
     expect(httpService.fetch).toHaveBeenCalledWith(`${url}?slug=${params.slug}`, undefined);
   });
+
+  it('should make a post request', async () => {
+    const url = 'https://some.url.com/';
+    const body = { some: 'json' };
+    const data = { id: '123', ...body };
+    mockRequestResponse(url, { headers: { 'Content-Type': 'application/json'}, status: 201, data});
+    const response = await baseResource.post(url, body);
+    expect(httpService.fetch).toHaveBeenCalledWith(
+      url,
+      { body: JSON.stringify(body), headers: { 'Content-Type': 'application/json' }, method: 'POST' }
+    );
+    expect(response.status).toEqual(201);
+    expect(response.data).toEqual(data);
+  });
 });
